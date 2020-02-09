@@ -1,0 +1,19 @@
+{
+  "name": "transform-controls",
+  "version": "0.0.1",
+  "description": "An improved version of three.js transform-controls",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/George35mk/transform-controls.git"
+  },
+  "author": "Georgios Chatoutsidis",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/George35mk/transform-controls/issues"
+  },
+  "homepage": "https://github.com/George35mk/transform-controls#readme"
+}
