@@ -22,7 +22,7 @@ export class AppComponent implements OnInit, AfterViewInit {
   public transformControls: TransformControls;
 
   /** The viewport element */
-  @ViewChild('viewport', { static: false }) container: ElementRef;
+  @ViewChild('viewport') container: ElementRef;
 
   constructor() { }
 
