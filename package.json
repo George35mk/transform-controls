@@ -3,8 +3,11 @@
   "version": "0.0.1",
   "description": "An improved version of three.js transform-controls",
   "main": "dist/index.js",
+  "types": "dist",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepare": "npm run build",
+    "build": "tsc -p ."
   },
   "repository": {
     "type": "git",
@@ -15,5 +18,15 @@
   "bugs": {
     "url": "https://github.com/George35mk/transform-controls/issues"
   },
-  "homepage": "https://github.com/George35mk/transform-controls#readme"
+  "homepage": "https://github.com/George35mk/transform-controls#readme",
+  "dependencies": {
+    "three": "^0.113.2"
+  },
+  "devDependencies": {
+    "tslint": "^6.0.0",
+    "typescript": "^3.7.5"
+  },
+  "files": [
+    "dist/**/*"
+  ]
 }
