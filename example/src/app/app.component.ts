@@ -1,15 +1,19 @@
-import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, OnDestroy } from '@angular/core';
 import { Scene, PerspectiveCamera, WebGLRenderer, BoxGeometry, MeshBasicMaterial, Mesh,
-  OrthographicCamera, PointLight, GridHelper, Color } from 'three';
+  OrthographicCamera, PointLight, GridHelper, Color, MeshStandardMaterial } from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { TransformControls, Utils } from '../../../dist/index';
+import { ReplaySubject } from 'rxjs';
+import { SubSink } from 'subsink';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit, AfterViewInit {
+export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
+
+  x = new ReplaySubject(0);
 
   public width: number;
   public height: number;
@@ -24,6 +28,8 @@ export class AppComponent implements OnInit, AfterViewInit {
   /** The viewport element */
   @ViewChild('viewport') container: ElementRef;
 
+  private _subs = new SubSink();
+
   constructor() { }
 
   ngOnInit() {
@@ -34,6 +40,10 @@ export class AppComponent implements OnInit, AfterViewInit {
     setTimeout(() => {
       this.init3D();
     }, 50);
+  }
+
+  ngOnDestroy() {
+    this._subs.unsubscribe();
   }
 
   init3D() {
@@ -75,14 +85,20 @@ export class AppComponent implements OnInit, AfterViewInit {
     this.render();
 
 
+
+
     console.log(this.scene);
 
 
     // add test object
-    // const geometry = new BoxGeometry(100, 100, 100);
-    // const material = new MeshBasicMaterial( { color: 0x00ff00 } );
-    // this.cube = new Mesh( geometry, material );
-    // this.scene.add( this.cube );
+    const geometry = new BoxGeometry(100, 100, 100);
+    const material = new MeshBasicMaterial( { color: 0x00ff00 } );
+    this.cube = new Mesh( geometry, material );
+    this.scene.add( this.cube );
+
+    this.transformControls.attach(this.cube);
+
+    this.render();
 
 
 
@@ -128,6 +144,21 @@ export class AppComponent implements OnInit, AfterViewInit {
 
   public initTransformControls(camera: PerspectiveCamera, renderer: THREE.WebGLRenderer) {
     this.transformControls = new TransformControls(camera, renderer.domElement);
+
+    // disable orbit controls
+    this._subs.sink =  this.transformControls.draggingChanged$.subscribe( res => {
+      console.log('draggingChanged$');
+      this.orbitControls.enabled = false;
+      this.render();
+    });
+
+    // enable orbit controls
+    this._subs.sink = this.transformControls.draggingStop$.subscribe( res => {
+      console.log('draggingStop$');
+      this.orbitControls.enabled = true;
+      this.render();
+    });
+
     console.log(this.transformControls);
     this.scene.add(this.transformControls);
   }

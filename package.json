@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/George35mk/transform-controls#readme",
   "dependencies": {
+    "rxjs": "^6.5.4",
     "three": "^0.113.2"
   },
   "devDependencies": {
